@@ -1,6 +1,7 @@
 package main
 
 import (
+	ascii "ascii_art/helpers"
 	"bufio"
 	"fmt"
 	"os"
@@ -15,7 +16,7 @@ func main() {
 		return
 	}
 
-	str := arg[0] 
+	str := arg[0]
 	txt := arg[1]
 	String := []string{}
 
@@ -32,10 +33,9 @@ func main() {
 
 	scanner := bufio.NewScanner(file)
 
-
 	for scanner.Scan() {
 		line := scanner.Text()
-		String = append(String, line) 
+		String = append(String, line)
 	}
 
 	for j := 0; j < len(ASplit); j++ {
@@ -50,9 +50,9 @@ func main() {
 			for _, char := range ASplit[j] {
 				//	fmt.Println(string(char))
 				pos := (char - 32) + 1 + 8*(char-32)
-				if !isValidAscii(int(char)) {
+				if !ascii.IsValidAscii(int(char)) {
 					return
-					
+
 				} else {
 					fmt.Print(String[int(pos)+i])
 
@@ -63,16 +63,4 @@ func main() {
 
 		}
 	}
-}
-
-func isValidAscii(char int) bool {
-	for c := 0; c < char; c++ {
-		if c >= 32 && c <= 126 {
-			return true
-		} else {
-			fmt.Println("Error : You can't put an unprintable ASCII string")
-			return false
-		}
-	}
-	return false
 }
