@@ -15,8 +15,8 @@ func main() {
 		return
 	}
 
-	str := arg[0] // Use arg[0] for the string
-	txt := arg[1] // Use arg[1] for the file name
+	str := arg[0] 
+	txt := arg[1]
 	String := []string{}
 
 	ANLcount := strings.Count(str, "\\n")
@@ -32,12 +32,12 @@ func main() {
 
 	scanner := bufio.NewScanner(file)
 
-	// Read each line of the file
+
 	for scanner.Scan() {
 		line := scanner.Text()
-		String = append(String, line) // Store each line in String
+		String = append(String, line) 
 	}
-	// Process each line of the provided string
+
 	for j := 0; j < len(ASplit); j++ {
 		if ASplit[j] == "" {
 			if ANLcount > 0 {
@@ -50,10 +50,12 @@ func main() {
 			for _, char := range ASplit[j] {
 				//	fmt.Println(string(char))
 				pos := (char - 32) + 1 + 8*(char-32)
-				if  isValidAscii(int(char)) != true {
+				if !isValidAscii(int(char)) {
 					return
+					
 				} else {
 					fmt.Print(String[int(pos)+i])
+
 				}
 
 			}
@@ -63,14 +65,14 @@ func main() {
 	}
 }
 
-func isValidAscii(char int)  bool {
-for char := 0 ; char < 10 ; char++ { 
-	if char >= 32 && char <= 126 {
-		return true
-	} else {
-		fmt.Print("Error : Put a printible ascii string")
-		return false
+func isValidAscii(char int) bool {
+	for c := 0; c < char; c++ {
+		if c >= 32 && c <= 126 {
+			return true
+		} else {
+			fmt.Println("Error : You can't put an unprintable ASCII string")
+			return false
+		}
 	}
-}
-return true
+	return false
 }
