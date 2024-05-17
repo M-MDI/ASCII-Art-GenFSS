@@ -15,8 +15,8 @@ func main() {
 		return
 	}
 
-	str := arg[0]     // Use arg[0] for the string
-	txt := arg[1]     // Use arg[1] for the file name
+	str := arg[0] // Use arg[0] for the string
+	txt := arg[1] // Use arg[1] for the file name
 	String := []string{}
 
 	ANLcount := strings.Count(str, "\\n")
@@ -48,12 +48,29 @@ func main() {
 		}
 		for i := 0; i < 8; i++ {
 			for _, char := range ASplit[j] {
+				//	fmt.Println(string(char))
 				pos := (char - 32) + 1 + 8*(char-32)
-				
+				if  isValidAscii(int(char)) != true {
+					return
+				} else {
 					fmt.Print(String[int(pos)+i])
-				
+				}
+
 			}
 			fmt.Println()
+
 		}
 	}
+}
+
+func isValidAscii(char int)  bool {
+for char := 0 ; char < 10 ; char++ { 
+	if char >= 32 && char <= 126 {
+		return true
+	} else {
+		fmt.Print("Error : Put a printible ascii string")
+		return false
+	}
+}
+return true
 }
