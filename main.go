@@ -1,66 +1,48 @@
 package main
 
 import (
-	ascii "ascii_art/helpers"
-	"bufio"
+	utils "ascii/utlis"
 	"fmt"
 	"os"
 	"strings"
 )
 
 func main() {
-	arg := os.Args[1:]
+	args := os.Args[1:]
 
-	if len(arg) != 2 {
-		fmt.Println("Check Your Command in terminal ! Usage : go run main.go [STRING] [FILE.TXT]")
+	if !utils.IsValidArgs(args) {
+		fmt.Println("Usage : go run . [STRING] [BANNER]")
 		return
 	}
 
-	str := arg[0]
-	txt := arg[1]
-	String := []string{}
+	input := args[0]
+	if input == "" {
+		return
+	}
 
-	ANLcount := strings.Count(str, "\\n")
-	ASplit := strings.Split(str, "\\n")
-
-	file, err := os.Open(txt)
-
+	data, err := utils.HandleBanner(args)
 	if err != nil {
-		fmt.Println("Error:", err)
+		fmt.Println(err)
 		return
 	}
-	defer file.Close()
 
-	scanner := bufio.NewScanner(file)
-
-	for scanner.Scan() {
-		line := scanner.Text()
-		String = append(String, line)
+	if err := utils.IsValidInput(input, data); err != nil {
+		fmt.Println(err)
+		return
 	}
 
-	for j := 0; j < len(ASplit); j++ {
-		if ASplit[j] == "" {
-			if ANLcount > 0 {
+	lines := strings.Count(input, "\\n")
+	words := strings.Split(input, "\\n")
+
+	for j := 0; j < len(words); j++ {
+		// Handle new line
+		if words[j] == "" {
+			if lines > 0 {
 				fmt.Println()
-				ANLcount--
+				lines--
 			}
 			continue
 		}
-		for i := 0; i < 8; i++ {
-			for _, char := range ASplit[j] {
-				//	fmt.Println(string(char))
-				pos := (char - 32) + 1 + 8*(char-32)
-				if !ascii.IsValidAscii(int(char)) {
-					return
-
-				} else {
-					fmt.Print(String[int(pos)+i])
-
-				}
-
-			}
-			fmt.Println()
-
-		}
+		utils.PrintLine(words[j], data)
 	}
 }
